@@ -17,12 +17,12 @@ class SunError(GardenError):
 class GardenManager():
     def __init__(
             self,
-            plants_list: list,
+            plants_list: list[str],
             water: int,
             sun: int,
             tank_water: int) -> None:
 
-        self.plants_list: list = plants_list
+        self.plants_list: list[str] = plants_list
         self.water: int = water
         self.sun: int = sun
         self.tank_water: int = tank_water
