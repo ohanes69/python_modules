@@ -56,21 +56,21 @@ class GardenManager():
             if self.water > 10:
                 raise WaterError(
                     f'Error checking {plant}: '
-                    'Water level {self.water} is too high (max 10)\n')
+                    f'Water level {self.water} is too high (max 10)\n')
             elif self.water < 1:
                 raise WaterError(
                     f'Error checking {plant}: '
-                    'Water level {self.water} is too low (min 1)\n')
+                    f'Water level {self.water} is too low (min 1)\n')
 
         for plant in self.plants_list:
             if self.sun > 12:
                 raise SunError(
                     f'Error checking {plant}: '
-                    'Sun level {self.sun} is too high (max 12)\n')
+                    f'Sun level {self.sun} is too high (max 12)\n')
             elif self.sun < 2:
                 raise SunError(
                     f'Error checking {plant}: '
-                    'Sun level {self.sun} is too low (min 2)\n')
+                    f'Sun level {self.sun} is too low (min 2)\n')
 
         for plant in self.plants_list:
             if plant.strip():
