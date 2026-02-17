@@ -1,6 +1,16 @@
 import sys
 
 
+class KeyIsDigit(Exception):
+    pass
+
+
+def key_is_digit(key: str) -> None:
+
+    if key.isdigit():
+        raise KeyIsDigit('The key is an int, only strings are accepted')
+
+
 def items_inventory(inventory: dict[str, int]) -> int:
     total_items: int = 0
     for i in inventory.values():
@@ -27,20 +37,10 @@ def current_inventory(inventory: dict[str, int], total_items: int) -> None:
 
 def stat_inventory(inventory: dict[str, int]) -> None:
 
-    keys: list[str] = list(inventory.keys())
-
-    max_key: str = keys[0]
+    max_key: str = max(inventory, key=lambda key: inventory[key])
     max_value: int = inventory[max_key]
-    min_key: str = keys[0]
+    min_key: str = min(inventory, key=lambda key: inventory[key])
     min_value: int = inventory[min_key]
-
-    for key in keys:
-        if inventory[key] > max_value:
-            max_value = inventory[key]
-            max_key = key
-        if inventory[key] < min_value:
-            min_value = inventory[key]
-            min_key = key
 
     print(f'Most abundant: {max_key} ({max_value} units)')
     print(f'Least abundant: {min_key} ({min_value} units)')
@@ -92,8 +92,12 @@ if __name__ == '__main__':
         inventory_list.append(sys.argv[i].split(':'))
 
     for pair in inventory_list:
-        key: str = pair[0]
-
+        try:
+            key_is_digit(pair[0])
+            key: str = pair[0]
+        except KeyIsDigit as err:
+            print(err)
+            sys.exit()
         try:
             value: int = int(pair[1])
         except ValueError as err:
