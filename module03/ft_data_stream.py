@@ -13,7 +13,7 @@ def count_actions(actions: dict[str, int], action: str) -> None:
         actions['leveled up'] += 1
 
 
-def high_level() -> str:
+def high_level(dict_players: dict[str, int]) -> str:
 
     high_level_players: int = 0
 
@@ -50,7 +50,7 @@ def ft_is_prime(nb: int) -> bool:
     if nb < 2:
         return False
 
-    for i in range(2, int(nb ** 0.5) + 1):
+    for i in range(2, nb):
         if nb % i == 0:
             return False
 
@@ -58,14 +58,16 @@ def ft_is_prime(nb: int) -> bool:
 
 
 def ft_prime_generator(n: int) -> Generator[int, None, None]:
-    count = 0
-    number = 2
+    found: int = 0
+    current: int = 2
 
-    while count < n:
-        if ft_is_prime(number):
-            yield number
-            count += 1
-        number += 1
+    while found < n:
+
+        if ft_is_prime(current):
+            yield current
+            found += 1
+
+        current += 1
 
 
 if __name__ == '__main__':
@@ -95,7 +97,7 @@ if __name__ == '__main__':
 
     print('\n=== Stream Analytics ===')
     print(f'Total events processed: {total_events}')
-    print(high_level())
+    print(high_level(dict_players))
 
     treasure: int = dict_actions['found treasure']
     level_up: int = dict_actions['leveled up']
@@ -103,15 +105,25 @@ if __name__ == '__main__':
     print(f'Treasure events: {treasure}')
     print(f'Level-up events: {level_up}')
 
-    print('Memory usage: Constant (streaming)')
+    print('\nMemory usage: Constant (streaming)')
     end = time.process_time()
     print(f"Processing time: {end - start:.3f} seconds")
 
     print('\n=== Generator Demonstration ===')
-    n: int = 10
+    n = 10
+    fibo_list: list[str] = []
+
     for number in ft_fibonacci_generator(n):
-        print(f'Fibonacci sequence (first {n}): {number}')
+        fibo_list.append(str(number))
+
+    result = ", ".join(fibo_list)
+    print(f'Fibonacci sequence (first {n}): {result}')
 
     n = 5
+    prime_list: list[str] = []
+
     for number in ft_prime_generator(n):
-        print(f'Prime numbers (first {n}): {number}')
+        prime_list.append(str(number))
+
+    result = ", ".join(prime_list)
+    print(f'Prime numbers (first {n}): {result}')
