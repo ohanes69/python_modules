@@ -35,15 +35,21 @@ def comprehension_dict(data: dict[str, dict[str, Any]]) -> None:
     }
     print(f'Player scores: {player_scores}')
 
-    categories: dict[str, int] = {
-        'high': 3,
-        'medium': 2,
-        'low': 1
-    }
+    for x, obj in data.items():
+        if obj['score'] < 2000:
+            data[x].update({'low': 1})
+        elif obj['score'] > 2200:
+            data[x].update({'high': 3})
+        else:
+            data[x].update({'medium': 2})
 
     score_categories: dict[str, int] = {
-        x: obj for x, obj in categories.items()
+        x: obj[x]
+        for x in ['high', 'medium', 'low']
+        for obj in data.values()
+        if x in obj
     }
+
     print(f'Score categories: {score_categories}')
 
     achivement_counts: dict[str, int] = {
@@ -144,7 +150,7 @@ if __name__ == '__main__':
     print(f'Total players: {total_players}')
 
     total_unique_ach: int = len(unique_achievements_len)
-    print(f'Total unique achievements: {unique_achievements_len}')
+    print(f'Total unique achievements: {total_unique_ach}')
 
     list_average: list[int] = [
         obj['score']
@@ -160,7 +166,7 @@ if __name__ == '__main__':
 
     len_achievement: int = [
         len(obj['achievements'])
-        for x, obj in data.items()
+        for _, obj in data.items()
         if obj['score'] == max_score][0]
 
     print(

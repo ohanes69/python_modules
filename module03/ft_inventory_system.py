@@ -5,10 +5,20 @@ class KeyIsDigit(Exception):
     pass
 
 
+class KeyIsEmpty(Exception):
+    pass
+
+
 def key_is_digit(key: str) -> None:
 
     if key.isdigit():
         raise KeyIsDigit('The key is an int, only strings are accepted')
+
+
+def key_is_empty(key: str) -> None:
+
+    if key.strip() == '':
+        raise KeyIsEmpty('Error: The key is empty')
 
 
 def items_inventory(inventory: dict[str, int]) -> int:
@@ -32,7 +42,10 @@ def current_inventory(inventory: dict[str, int], total_items: int) -> None:
                 items[i], items[j] = items[j], items[i]
 
     for key, value in items:
-        print(f'{key}: {value} units ({value / total_items * 100:.1f}%)')
+        if total_items > 0:
+            print(f'{key}: {value} units ({value / total_items * 100:.1f}%)')
+        else:
+            print(f'{key}: {value} units 0.0%)')
 
 
 def stat_inventory(inventory: dict[str, int]) -> None:
@@ -94,8 +107,9 @@ if __name__ == '__main__':
     for pair in inventory_list:
         try:
             key_is_digit(pair[0])
+            key_is_empty(pair[0])
             key: str = pair[0]
-        except KeyIsDigit as err:
+        except (KeyIsDigit, KeyIsEmpty) as err:
             print(err)
             sys.exit()
         try:
@@ -118,10 +132,10 @@ if __name__ == '__main__':
     nested_dict(inventory)
 
     print('\n=== Management Suggestions ===')
-    print(f'Restock needed: {restock_needed(inventory)}')
+    print('Restock needed:', ', '.join(restock_needed(inventory)))
 
     print('\n=== Dictionary Properties Demo ===')
-    print(f'Dictionary keys: {list(inventory.keys())}')
-    print(f'Dictionary values: {list(inventory.values())}')
+    print("Dictionary keys:", ", ".join(inventory.keys()))
+    print("Dictionary values:", ", ".join(map(str, inventory.values())))
 
     print(f"Sample lookup - 'sword' in inventory: {'sword' in inventory}")
