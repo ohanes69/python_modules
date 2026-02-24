@@ -7,6 +7,10 @@ if __name__ == '__main__':
         print('SECURE EXTRACTION:')
         print(f.read())
 
+    with open('security_protocols.txt', 'w') as f:
+        f.write(
+            '[CLASSIFIED] New security protocols archived'
+        )
     with open('security_protocols.txt', 'r') as f:
         print('\nSECURE PRESERVATION:')
         print(f.read())
