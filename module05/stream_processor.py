@@ -1,6 +1,21 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
+class DataError(Exception):
+    pass
+
+
+class NumericError(DataError):
+    pass
+
+
+class TextError(DataError):
+    pass
+
+
+class LogError(DataError):
+    pass
+
 
 class DataProcessor(ABC):
     @abstractmethod
@@ -17,8 +32,14 @@ class DataProcessor(ABC):
 
 class NumericProcessor(DataProcessor):
     def process(self, data: Any) -> str:
-        print('\nInitializing Numeric Processor...')
-        return (f'Processing data: {data}')
+        if self.validate(data) is False:
+            raise NumericError("The list does not contain only numerical values.")
+
+        return (
+            f'Processed {len(data)} numeric values, '
+            f'sum={sum(data)}, '
+            f'avg={sum(data) / len(data)}'
+        )
 
     def validate(self, data: Any) -> bool:
         if isinstance(data, list) is not True:
@@ -31,16 +52,40 @@ class NumericProcessor(DataProcessor):
 
 class TextProcessor(DataProcessor):
     def process(self, data: Any) -> str:
-        print('\nInitializing Text Processor...')
-        return (f'Processing data: "{data}"')
+        if self.validate(data) is False:
+            raise TextError('The text is not a string')
+
+        return (
+            f'Processed text: {len(data)} characters, '
+            f'{len(data.split())} words'
+        )
+
 
     def validate(self, data: Any) -> bool:
-        if isinstance(data, str) is True:
-            return True
-        else:
+        if isinstance(data, str) is not True:
             return False
+        else:
+            return True
 
-# class LogProcessor(DataProcessor):
+
+class LogProcessor(DataProcessor):
+
+    def process(self, data: Any) -> str:
+        if self.validate(data) is not True:
+            raise LogError("Invalid log format.")
+
+        level, message = data.split(":", 1)
+        level = level.strip()
+        message = message.strip()
+
+        return f'[{level}] {level} level detected: {message}'
+
+    def validate(self, data: Any) -> bool:
+        if not isinstance(data, str):
+            return False
+        if ":" not in data:
+            return False
+        return True
 
 
 if __name__ == '__main__':
@@ -48,34 +93,57 @@ if __name__ == '__main__':
 
     numeric_list: list = [1, 2, 3, 4, 5]
     numeric = NumericProcessor()
-
-    print(numeric.process(numeric_list))
-
-    if numeric.validate(numeric_list) is True:
-        print('Validation: Numeric data verified')
-    else:
-        print('Not numeric only')
-
-    print(numeric.format_output(
-        f'Processed {len(numeric_list)} numeric values, '
-        f'sum={sum(numeric_list)}, '
-        f'avg={sum(numeric_list) / len(numeric_list)}'
+    print('\nInitializing Numeric Processor...\n'
+              f'Processing data: {numeric_list}'
         )
-    )
+
+    try:
+        print('Validation: Numeric data verified')
+        result = numeric.process(numeric_list)
+        print(numeric.format_output(result))
+    except NumericError as err:
+        print(f'Error: {err}')
+
 
     text_str: str = "Hello Nexus World"
     text = TextProcessor()
+    print(
+        '\nInitializing Text Processor...\n'
+        f'Processing data: {text_str}'
+    )
 
-    print(text.process(text_str))
-
-    if text.validate(text_str) is True:
+    try:
         print('Validation: Text data verified')
-    else:
-        print('Not string only')
+        result = text.process(text_str)
+        print(text.format_output(result))
+    except TextError as err:
+        print(f'Error: {err}')
 
-    print(text.format_output(
-        f'Processed text: {len(text_str)} characters, '
-        f'{len(text_str.split())} words'
-    ))
 
-    
+    log_text: str = "ERROR: Connection timeout"
+    log = LogProcessor()
+    print(
+        '\nInitializing Log Processor...\n'
+        f'Processing data: {log_text}'
+    )
+
+    try:
+        print('Validation: Log entry verified')
+        result = log.process(log_text)
+        print(log.format_output(result))
+    except LogError as err:
+        print(f'Error: {err}')
+
+
+    poly = [NumericProcessor(), TextProcessor(), LogProcessor()]
+    data = [[2, 2, 2], 'Hello Word!z', 'INFO: System ready']
+    print(
+        '\n=== Polymorphic Processing Demo ===\n'
+        'Processing multiple data types through same interface...'
+    )
+
+    for pol, dat in zip(poly, data):
+        res = pol.process(dat)
+        print(pol.format_output(res))
+
+    print('\nFoundation systems online. Nexus ready for advanced streams.')
