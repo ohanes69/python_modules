@@ -35,12 +35,11 @@ class SensorStream(DataStream):
             data_batch: List[Any],
             criteria: Optional[str] = None) -> List[Any]:
 
-        list_filter: List[Any] = []
-
-        for data in data_batch:
-            if isinstance(data, tuple) and data[0] == criteria:
-                list_filter.append(data)
-        return (list_filter)
+        return [
+            data
+            for data in data_batch
+            if isinstance(data, tuple) and data[0] == criteria
+        ]
 
     def get_stats(self) -> Dict[str, Union[str, int, float]]:
 
@@ -94,12 +93,11 @@ class TransactionStream(DataStream):
             data_batch: List[Any],
             criteria: Optional[str] = None) -> List[Any]:
 
-        list_filter: List[Any] = []
-
-        for data in data_batch:
-            if isinstance(data, tuple) and data[0] == criteria:
-                list_filter.append(data)
-        return (list_filter)
+        return [
+            data
+            for data in data_batch
+            if isinstance(data, tuple) and data[0] == criteria
+        ]
 
     def get_stats(self) -> Dict[str, Union[str, int, float]]:
 
@@ -155,12 +153,11 @@ class EventStream(DataStream):
             data_batch: List[Any],
             criteria: Optional[str] = None) -> List[Any]:
 
-        list_filter: List[Any] = []
-
-        for data in data_batch:
-            if isinstance(data, str) and data == criteria:
-                list_filter.append(data)
-        return (list_filter)
+        return [
+            data
+            for data in data_batch
+            if isinstance(data, str) and data == criteria
+        ]
 
     def get_stats(self) -> Dict[str, Union[str, int, float]]:
 
