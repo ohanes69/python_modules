@@ -3,8 +3,10 @@ from typing import Any, Union, Optional, List, Dict
 
 
 class DataStream(ABC):
-    def __init__(self, stream_id: str):
+    def __init__(self, stream_id: str) -> None:
+
         self.stream_id = stream_id
+        self.processed_count: int = 0
 
     @abstractmethod
     def process_batch(self, data_batch: List[Any]) -> str:
@@ -14,15 +16,19 @@ class DataStream(ABC):
             self,
             data_batch: List[Any],
             criteria: Optional[str] = None) -> List[Any]:
-        pass
+        return (data_batch)
 
     def get_stats(self) -> Dict[str, Union[str, int, float]]:
-        pass
+        return {
+            "type": "Generic",
+            "processed": self.processed_count
+        }
 
 
 class SensorStream(DataStream):
     def __init__(self, stream_id: str) -> None:
         super().__init__(stream_id)
+        self.avg_temp: float = 0.0
 
     def filter_data(
             self,
@@ -66,7 +72,6 @@ class SensorStream(DataStream):
                 return (f'[ERROR]: {err}')
             temp_nb += 1
 
-        self.avg_temp: float = 0
         try:
             self.avg_temp = temp_tot / temp_nb
         except ZeroDivisionError:
@@ -82,6 +87,7 @@ class SensorStream(DataStream):
 class TransactionStream(DataStream):
     def __init__(self, stream_id: str) -> None:
         super().__init__(stream_id)
+        self.balance: int = 0
 
     def filter_data(
             self,
@@ -132,7 +138,7 @@ class TransactionStream(DataStream):
                 return (f'[ERROR]: {err}')
 
         self.processed_count: int = len(data_batch)
-        self.balance: int = buy_tot - sell_tot
+        self.balance = buy_tot - sell_tot
         return (
             f'Transaction analysis: {self.processed_count} operations, '
             f'net flow: {self.balance} units'
@@ -142,6 +148,7 @@ class TransactionStream(DataStream):
 class EventStream(DataStream):
     def __init__(self, stream_id: str) -> None:
         super().__init__(stream_id)
+        self.error_nb: int = 0
 
     def filter_data(
             self,
@@ -160,7 +167,7 @@ class EventStream(DataStream):
         stats: Dict[str, Union[str, int, float]] = {
             "type": "Event",
             "processed": self.processed_count,
-            "balance": self.error_nb
+            "error": self.error_nb
         }
         return (stats)
 
@@ -173,7 +180,7 @@ class EventStream(DataStream):
         list_err: List[Any] = self.filter_data(data_batch, 'error')
 
         self.processed_count: int = len(data_batch)
-        self.error_nb: int = len(list_err)
+        self.error_nb = len(list_err)
         return (
             f'Processing event batch: {data_batch}\n'
             f'Event analysis: {self.processed_count} events, '
@@ -197,11 +204,34 @@ class StreamProcessor():
         print('Batch 1 Results:')
 
         for s in stream:
-            stats: Dict[str, Union[str, int, float]] = s.get_stats()
+            stat: Dict[str, Union[str, int, float]] = s.get_stats()
             print(
-                f'- {stats['type']} data: '
-                f'{stats['processed']} processed'
+                f"- {stat['type']} data: "
+                f"{stat['processed']} processed"
             )
+
+        print('\nStream filtering active: High-priority data only')
+
+        sensor_alert: int = 0
+        trans_alert: int = 0
+
+        for s in stream:
+            stats = s.get_stats()
+
+            if stats["type"] == "Sensor":
+                value = stats.get("avg_temp")
+                if isinstance(value, (int, float)) and value > 30:
+                    sensor_alert += 1
+
+            if stats["type"] == "Transaction":
+                value = stats.get("balance")
+                if isinstance(value, (int, float)) and value > 0:
+                    trans_alert += 1
+
+        print(
+            f'Filtered results: {sensor_alert}  critical sensor alerts, '
+            f'{trans_alert} large transaction'
+        )
 
 
 if __name__ == '__main__':
@@ -234,3 +264,5 @@ if __name__ == '__main__':
             event_list
         ]
     stream.polymorphism(stream_list, data_all)
+
+    print('\nAll streams processed successfully. Nexus throughput optimal.')
