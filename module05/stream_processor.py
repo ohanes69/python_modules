@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
+
 class DataError(Exception):
     pass
 
@@ -33,13 +34,18 @@ class DataProcessor(ABC):
 class NumericProcessor(DataProcessor):
     def process(self, data: Any) -> str:
         if self.validate(data) is False:
-            raise NumericError("The list does not contain only numerical values.")
+            raise NumericError(
+                "The list does not contain only numerical values.")
+        try:
+            sum(data) / len(data)
+        except ZeroDivisionError as err:
+            print(err)
 
         return (
-            f'Processed {len(data)} numeric values, '
-            f'sum={sum(data)}, '
-            f'avg={sum(data) / len(data)}'
-        )
+                f'Processed {len(data)} numeric values, '
+                f'sum={sum(data)}, '
+                f'avg={sum(data) / len(data)}'
+            )
 
     def validate(self, data: Any) -> bool:
         if isinstance(data, list) is not True:
@@ -59,7 +65,6 @@ class TextProcessor(DataProcessor):
             f'Processed text: {len(data)} characters, '
             f'{len(data.split())} words'
         )
-
 
     def validate(self, data: Any) -> bool:
         if isinstance(data, str) is not True:
@@ -93,9 +98,10 @@ if __name__ == '__main__':
 
     numeric_list: list = [1, 2, 3, 4, 5]
     numeric = NumericProcessor()
-    print('\nInitializing Numeric Processor...\n'
-              f'Processing data: {numeric_list}'
-        )
+    print(
+        '\nInitializing Numeric Processor...\n'
+        f'Processing data: {numeric_list}'
+    )
 
     try:
         print('Validation: Numeric data verified')
@@ -103,7 +109,6 @@ if __name__ == '__main__':
         print(numeric.format_output(result))
     except NumericError as err:
         print(f'Error: {err}')
-
 
     text_str: str = "Hello Nexus World"
     text = TextProcessor()
@@ -119,7 +124,6 @@ if __name__ == '__main__':
     except TextError as err:
         print(f'Error: {err}')
 
-
     log_text: str = "ERROR: Connection timeout"
     log = LogProcessor()
     print(
@@ -133,7 +137,6 @@ if __name__ == '__main__':
         print(log.format_output(result))
     except LogError as err:
         print(f'Error: {err}')
-
 
     poly = [NumericProcessor(), TextProcessor(), LogProcessor()]
     data = [[2, 2, 2], 'Hello Word!z', 'INFO: System ready']
