@@ -36,9 +36,9 @@ class ProcessingPipeline(ABC):
             result = self.process(data)
             self._stats["processed"] += 1
             return result
-        except Exception as e:
+        except Exception as err:
             self._stats["errors"] += 1
-            raise e
+            raise err
         finally:
             self._stats["total_time"] += time.perf_counter() - start
 
@@ -156,7 +156,6 @@ class NexusManager:
             print(result)
 
     def chain(self, data: Any) -> Any:
-        """Feed output of each pipeline as input to the next."""
         result = data
         for pipeline in self.pipelines:
             result = pipeline.run(result)
@@ -164,11 +163,10 @@ class NexusManager:
 
 
 if __name__ == "__main__":
-    print("=== CODE NEXUS - ENTERPRISE PIPELINE SYSTEM ===")
+    print("=== CODE NEXUS - ENTERPRISE PIPELINE SYSTEM ===\n")
     print("Initializing Nexus Manager...")
     print("Pipeline capacity: 1000 streams/second")
 
-    # ── Build pipelines ─────────────────────────────────
     print("\nCreating Data Processing Pipeline...")
     print("Stage 1: Input validation and parsing")
     print("Stage 2: Data transformation and enrichment")
@@ -184,7 +182,7 @@ if __name__ == "__main__":
     csv_pipeline = make_pipeline(CSVAdapter("csv-001"))
     stream_pipeline = make_pipeline(StreamAdapter("stream-001"))
 
-    print("\n=== Multi-Format Data Processing ===")
+    print("\n=== Multi-Format Data Processing ===\n")
 
     print("Processing JSON data through pipeline...")
     json_input = '{"sensor": "temp", "value": 23.5, "unit": "C"}'
@@ -239,8 +237,8 @@ if __name__ == "__main__":
 
     try:
         recovery_pipeline.run("test_data")
-    except ValueError as e:
-        print(f"Error detected in Stage 2: {e}")
+    except ValueError as err:
+        print(f"Error detected in Stage 2: {err}")
         print("Recovery initiated: Switching to backup processor")
         recovery_pipeline.stages = [BackupStage()]
         result = recovery_pipeline.run("test_data")
