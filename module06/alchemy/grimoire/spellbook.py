@@ -1,15 +1,16 @@
-from alchemy.grimoire.validator import validate_ingredients
-
-
 def record_spell(spell_name: str, ingredients: str) -> str:
-    result = validate_ingredients(ingredients)
-    x = result.split()
+    from alchemy.grimoire.validator import validate_ingredients
 
-    for y in x:
-        if y == 'VALID':
-            return (f'Spell recorded: {spell_name} ({validate_ingredients(ingredients)})')
-    return (f'Spell rejected: {spell_name} ({validate_ingredients(ingredients)})')
+    return_output = validate_ingredients(ingredients)
+    split_output = return_output.split()
 
-
-# if __name__ == '__main__':
-#     print()
+    for output in split_output:
+        if output == 'VALID':
+            return (
+                f'Spell recorded: {spell_name} '
+                f'({return_output})'
+            )
+    return (
+        f'Spell rejected: {spell_name} '
+        f'({return_output})'
+    )

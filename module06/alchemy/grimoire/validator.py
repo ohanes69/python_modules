@@ -1,7 +1,6 @@
 def validate_ingredients(ingredients: str) -> str:
 
     ingredients_list: list[str] = ingredients.split()
-    print(ingredients_list)
 
     ingredients_base = [
         'fire', 'water', 'earth', 'air'
@@ -14,6 +13,6 @@ def validate_ingredients(ingredients: str) -> str:
                 count += 1
 
     if count > 0:
-        return (f'{ingredients} VALID')
+        return (f'{ingredients} - VALID')
     else:
-        return (f'{ingredients} INVALID')
+        return (f'{ingredients} - INVALID')
