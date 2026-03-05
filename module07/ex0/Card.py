@@ -12,7 +12,7 @@ class CardClass(ABC):
         pass
 
     def get_card_info(self) -> dict:
-        return ({'hello': 3})
+        pass
 
     def is_playable(self, available_mana: int) -> bool:
         pass

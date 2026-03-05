@@ -6,19 +6,30 @@ class CreatureCardClass(CardClass):
             self,
             name: str,
             cost: int, rarity: str, attack: int, health: int) -> None:
-        super().__init__(self, name, cost, rarity)
+        super().__init__(name, cost, rarity)
         self.attack = attack
         self.health = health
 
     def play(self, game_state: dict) -> dict:
-        pass
+        game_state.update({'card_played': self.name})
+        game_state.update({'mana_used': self.cost})
+        return (game_state)
+
+    def get_card_info(self) -> dict:
+        fire_dragon_info: dict = {
+            'name': self.name,
+            'cost': self.cost,
+            'rarity': self.rarity,
+            'attack': self.attack,
+            'health': self.health,
+        }
+        return (fire_dragon_info)
+
+    def is_playable(self, available_mana: int) -> bool:
+        if available_mana > 4:
+            return True
+        else:
+            return False
 
     def attack_target(self, target) -> dict:
         pass
-
-
-if __name__ == '__main__':
-
-    player1 = CreatureCardClass('Fire Dragon', 5, 'Legendary', 7, 5)
-    player1.get_card_info()
-    # card1 = Card('Fire Dragon', 5, 'Legendary')
