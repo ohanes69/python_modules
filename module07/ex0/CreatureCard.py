@@ -1,4 +1,4 @@
-from Card import CardClass
+from ex0.Card import CardClass
 
 
 class CreatureCardClass(CardClass):
@@ -9,6 +9,7 @@ class CreatureCardClass(CardClass):
         super().__init__(name, cost, rarity)
         self.attack = attack
         self.health = health
+        self.type: str = "Creature"
 
     def play(self, game_state: dict) -> dict:
         game_state.update({'card_played': self.name})
@@ -31,5 +32,12 @@ class CreatureCardClass(CardClass):
         else:
             return False
 
-    def attack_target(self, target) -> dict:
-        pass
+    def attack_target(self, target: str) -> dict:
+        return (
+            {
+                'attacker': self.name,
+                'target': target,
+                'damage_dealt': self.attack,
+                'combat_resolved': True
+            }
+        )

@@ -1,5 +1,4 @@
-from Card import CardClass
-from CreatureCard import CreatureCardClass
+from ex0.CreatureCard import CreatureCardClass
 
 if __name__ == '__main__':
 
@@ -19,4 +18,9 @@ if __name__ == '__main__':
     print(f'Play result: {fire_dragon.play(game_state)}')
 
     print('\nFire Dragon attacks Goblin Warrior:')
-    goblin_warrior = CreatureCardClass('Goblin Warrior', )
+    print(f"Attack result: {fire_dragon.attack_target('Goblin Warrior')}")
+
+    print('\nTesting insufficient mana (3 available):')
+    print(f'Playable: {fire_dragon.is_playable(3)}')
+
+    print('\nAbstract pattern successfully demonstrated!')
