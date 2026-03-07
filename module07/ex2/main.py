@@ -35,7 +35,9 @@ if __name__ == '__main__':
     print('Combat phase:')
     attack_power: int = 5
     arcane_warrior = EliteCardClass(
-        'Arcane Warrior', attack_power, 'Legendary', 'melee', 7
+        'Arcane Warrior', 5, 'Legendary', 'melee', attack_power, 7
     )
     print(f"Attack result: {arcane_warrior.attack('Enemy')}")
     print(f'Defense result: {arcane_warrior.defend(attack_power)}')
+
+    print(arcane_warrior.get_combat_stats())
