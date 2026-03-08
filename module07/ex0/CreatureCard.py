@@ -22,6 +22,7 @@ class CreatureCardClass(CardClass):
             'name': self.name,
             'cost': self.cost,
             'rarity': self.rarity,
+            'type': self.type,
             'attack': self.attack,
             'health': self.health,
         }

@@ -14,4 +14,4 @@ class SpellCardClass(CardClass):
         return (game_state)
 
     def resolve_effect(self, targets: list) -> dict:
-        pass
+        return {}

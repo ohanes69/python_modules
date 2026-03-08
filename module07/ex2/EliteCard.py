@@ -57,7 +57,7 @@ class EliteCardClass(CardClass, CombatableClass, MagicalClass):
     def cast_spell(self, spell_name: str, targets: list) -> dict:
 
         cast_spell_dict: dict[Any] = {
-            'defender': spell_name,
+            'caster': spell_name,
             'spell': 'Fireball',
             'targets': targets,
             'mana_used': self.cost

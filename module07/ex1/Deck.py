@@ -10,15 +10,23 @@ class DeckClass():
         self.cards.append(card)
 
     def remove_card(self, card_name: str) -> bool:
-        pass
+        for card in self.cards:
+            if card.name == card_name:
+                self.cards.remove(card)
+                return True
+        return False
 
     def shuffle(self) -> None:
-        pass
+        random.shuffle(self.cards)
 
     def draw_card(self) -> CardClass:
         return (random.choice(self.cards))
 
     def get_deck_stats(self) -> dict:
+        avg_cost: float = round(sum(
+                    [card.cost for card in self.cards]
+                ) / len(self.cards), 2)
+
         return (
             {
                 'total_cards': len(self.cards),
@@ -31,8 +39,6 @@ class DeckClass():
                 'artifacts': sum(
                     [card.type == 'Artifact' for card in self.cards]
                 ),
-                'avg_cost': sum(
-                    [card.cost for card in self.cards]
-                ),
+                'avg_cost': avg_cost,
             }
         )
