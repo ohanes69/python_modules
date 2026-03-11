@@ -29,15 +29,15 @@ class TournamentCardClass(CardClass, CombatableClass, RankableClass):
             target.rating -= 16
             self.wins += 1
             target.losses += 1
-            winner = self.name
-            loser = target.name
+            winner = self.card_id
+            loser = target.card_id
         else:
             target.rating += 16
             self.rating -= 16
             target.wins += 1
             self.losses += 1
-            winner = target.name
-            loser = self.name
+            winner = target.card_id
+            loser = self.card_id
 
         return {
             'winner': winner,

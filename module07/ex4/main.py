@@ -25,16 +25,16 @@ if __name__ == '__main__':
     ]
 
     print(f"{fire_dragon.name} (ID: {fire_dragon.card_id}):")
-    print(f'Interfaces: {interfaces}')
-    print(f'Rating: {fire_dragon.rating}')
-    print(f'Record: {fire_dragon.wins}-{fire_dragon.losses}')
+    print(f'- Interfaces: {interfaces}')
+    print(f'- Rating: {fire_dragon.rating}')
+    print(f'- Record: {fire_dragon.wins}-{fire_dragon.losses}')
 
     print()
 
     print(f"{ice_wizard.name} (ID: {ice_wizard.card_id}):")
-    print(f'Interfaces: {interfaces}')
-    print(f'Rating: {ice_wizard.rating}')
-    print(f'Record: {ice_wizard.wins}-{ice_wizard.losses}')
+    print(f'- Interfaces: {interfaces}')
+    print(f'- Rating: {ice_wizard.rating}')
+    print(f'- Record: {ice_wizard.wins}-{ice_wizard.losses}')
 
     print('\nCreating tournament match...')
     match: dict[Any] = platform.create_match(
@@ -44,7 +44,7 @@ if __name__ == '__main__':
     fire_dragon.play({})
     ice_wizard.play({})
 
-    print(fire_dragon.attack(ice_wizard))
+    print(f"Match result: {fire_dragon.attack(ice_wizard)}")
 
     print('\nTournament Leaderboard:')
 

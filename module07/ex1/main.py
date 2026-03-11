@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
     for card in card_list:
         card_drew = deck.draw_card()
-        print(f'{card_drew.name} ({card_drew.type})')
+        print(f'Drew: {card_drew.name} ({card_drew.type})')
         print(f'Play result: {card_drew.play({})}\n')
 
     print('Polymorphism in action: Same interface, different card behaviors!')
