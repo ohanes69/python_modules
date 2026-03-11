@@ -17,10 +17,9 @@ class EliteCardClass(CardClass, CombatableClass, MagicalClass):
 
     def attack(self, target) -> dict:
 
-        attack_dict: dict[Any] = {}
         self.combat_type = 'melee'
 
-        attack_dict = {
+        attack_dict: dict[Any] = {
             'attacker': self.name,
             'target': target,
             'damage': self.attack_power,

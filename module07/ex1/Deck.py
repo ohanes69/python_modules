@@ -21,9 +21,6 @@ class DeckClass():
 
     def draw_card(self) -> CardClass:
 
-        if not self.cards:
-            return None
-
         card = random.choice(self.cards)
         self.cards.remove(card)
 
