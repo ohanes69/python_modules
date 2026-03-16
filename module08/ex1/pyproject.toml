@@ -1,18 +1,20 @@
 [project]
-name = "matrix"
+name = "loading-programs"
 version = "0.1.0"
-description = "visualization"
+description = "install packages version"
 authors = [
-    {name = "Sacha Markarian",email = "samarkar@42lyon.fr"}
+    {name = "samarkar"}
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "pandas (>=3.0.1,<4.0.0)",
-    "numpy (>=2.4.3,<3.0.0)",
-    "requests (>=2.32.5,<3.0.0)",
-    "matplotlib (>=3.10.8,<4.0.0)"
+    "requests (>=2.31.0,<3.0.0)",
+    "numpy (>=1.26.2,<2.0.0)",
+    "pandas (>=2.1.0,<3.0.0)",
+    "matplotlib (>=3.7.2,<4.0.0)"
 ]
 
+[tool.poetry]
+package-mode = false
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

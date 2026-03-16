@@ -33,23 +33,19 @@ def analyzing_data() -> None:
     import matplotlib.pyplot as plt
 
     print("\nAnalyzing Matrix data...")
-    data_points: int = 1000
-    x = np.linspace(0, 10, data_points)
-    y = np.sin(x) + np.random.normal(0, 0.1, data_points)
-    df = pd.DataFrame({"Time": x, "Signal": y})
-    print(f"Processing {data_points} data points...")
+    array_x = np.array([x for x in range(0, 1000)])
+    array_y = np.array([y for y in range(0, 1000)])
+    print("Processing 1000 data points...")
 
+    x = pd.Series(array_x)
+    y = pd.Series(array_y)
+
+    plt.plot(x, y)
+    plt.savefig("analysis.png")
     print("Generating visualization...")
-    plt.figure(figsize=(10, 5))
-    plt.plot(df["Time"], df["Signal"], label="Matrix Signal")
-    plt.title("Matrix Data Analysis")
-    plt.xlabel("Time")
-    plt.ylabel("Signal")
-    plt.legend()
-    plt.tight_layout()
-    plt.savefig("matrix_analysis.png")
-    plt.close()
-    print("Analysis complete!\nResults saved to: matrix_analysis.png")
+
+    print("\nAnalysis complete!")
+    print("Results saved to: matrix\\_analysis.png}")
 
 
 if __name__ == '__main__':
